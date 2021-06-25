@@ -17,6 +17,7 @@ class VisionReceiver:
         self.server_address = server_address
 
         self.logger = logging.getLogger('VisionReceiver')
+        print(server_address)
 
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.socket.bind(server_address)
