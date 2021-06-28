@@ -44,7 +44,7 @@ class PosePublisher:
       
       pose = Pose()
       quat = tf.transformations.quaternion_from_euler(0, 0, itr_pose[2])
-      pose.position = Point(itr_pose[0] / 1000, itr_pose[1] / 1000, 0)
+      pose.position = Point(itr_pose[0], itr_pose[1], 0)
       pose.orientation = Quaternion(*quat)
 
       # Publish pose
