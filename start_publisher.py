@@ -1,3 +1,4 @@
+#!/usr/bin/env python2
 from vision.publisher import PosePublisher
 
 if __name__ == "__main__":

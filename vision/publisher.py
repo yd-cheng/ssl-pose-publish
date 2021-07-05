@@ -1,8 +1,9 @@
+#!/usr/bin/env python2
 import time
 import rospy
 import tf
 
-from geometry_msgs.msg import Point, Pose, Quaternion
+from geometry_msgs.msg import Point, Pose, PoseStamped, Quaternion
 
 from vision_receiver import VisionReceiver
 
@@ -39,14 +40,21 @@ class PosePublisher:
     for robot_id, itr_pose in poses.items():
       if robot_id not in self.pub_dict:
         topic_name = "robot_pose_" + str(robot_id)
-        self.pub_dict[robot_id] = rospy.Publisher(topic_name, Pose, queue_size=10)
+        self.pub_dict[robot_id] = rospy.Publisher(topic_name, PoseStamped, queue_size=10)
         rospy.loginfo('Created new topic {}'.format(topic_name))
       
       pose = Pose()
-      quat = tf.transformations.quaternion_from_euler(0, 0, itr_pose[2])
+      quat = tf.transformations.quaternion_from_euler(0, 0, itr_pose[2], 'ryxz')
       pose.position = Point(itr_pose[0], itr_pose[1], 0)
-      pose.orientation = Quaternion(*quat)
+      pose.orientation.x = quat[0]
+      pose.orientation.y = quat[1]
+      pose.orientation.z = quat[2]
+      pose.orientation.w = quat[3]
+
+      poseStamped = PoseStamped()
+      poseStamped.header.stamp = rospy.Time.now()
+      poseStamped.pose = pose
 
       # Publish pose
-      self.pub_dict[robot_id].publish(pose)
+      self.pub_dict[robot_id].publish(poseStamped)
 
