@@ -53,6 +53,7 @@ class PosePublisher:
 
       poseStamped = PoseStamped()
       poseStamped.header.stamp = rospy.Time.now()
+      poseStamped.header.frame_id = str(robot_id)
       poseStamped.pose = pose
 
       # Publish pose
